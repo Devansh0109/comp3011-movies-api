@@ -2,6 +2,8 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework import status
 
+from django.db.models import Avg, Q
+
 from .models import Movie, Review
 from .serializers import MovieSerializer, ReviewSerializer
 
@@ -64,3 +66,46 @@ def movie_review(request, pk):
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         else:
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        
+@api_view(["GET"])
+def movie_search(request):
+    query = request.GET.get("q")
+    genre = request.GET.get("genre")
+    year = request.GET.get("year")
+    min_rating = request.GET.get("min_rating")
+
+    movies = Movie.objects.all().annotate(avg_rating=Avg("reviews__rating"))
+    movies = list(movies)
+
+    if query:
+        movies = [
+            movie for movie in movies
+            if query.lower() in movie.title.lower()
+            or query.lower() in movie.director.lower()
+            or query.lower() in movie.overview.lower()
+        ]
+
+    if genre:
+        movies = [
+            movie for movie in movies
+            if genre.lower() in movie.genre.lower()
+        ]
+
+    if year:
+        movies = [
+            movie for movie in movies
+            if str(movie.release_year) == year
+        ]
+
+    if min_rating:
+        try:
+            min_rating = float(min_rating)
+            movies = [
+                movie for movie in movies
+                if movie.avg_rating is not None and movie.avg_rating >= min_rating
+            ]
+        except ValueError:
+            return Response({"error": "min_rating must be a number"}, status=status.HTTP_400_BAD_REQUEST)
+        
+    serializer = MovieSerializer(movies, many=True)
+    return Response(serializer.data)
