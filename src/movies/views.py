@@ -2,7 +2,7 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework import status
 
-from django.db.models import Avg, Q
+from django.db.models import Avg, Q, Count
 
 from .models import Movie, Review
 from .serializers import MovieSerializer, ReviewSerializer
@@ -109,3 +109,28 @@ def movie_search(request):
         
     serializer = MovieSerializer(movies, many=True)
     return Response(serializer.data)
+
+@api_view(["GET"])
+def top_rated_movies(request):
+    movies = Movie.objects.annotate(avg_rating=Avg("reviews__rating"))
+    movies = movies.filter(avg_rating__isnull=False)
+    movies = movies.order_by("-avg_rating")
+
+    serializer = MovieSerializer(movies, many=True)
+    return Response(serializer.data)
+
+@api_view(["GET"])
+def most_reviewed_movies(request):
+    movies = Movie.objects.annotate(review_total=Count("reviews"))
+    movies = movies.filter(review_total__gt=0)
+    movies = movies.order_by("-review_total", "title")
+
+    serializer = MovieSerializer(movies, many=True)
+    return Response(serializer.data)
+
+@api_view(["GET"])
+def genre_summary(request):
+    summary = Movie.objects.values("genre").annotate(movie_count=Count("id"), average_rating=Avg("reviews__rating"))
+    summary = summary.order_by("genre")
+
+    return Response(summary)
