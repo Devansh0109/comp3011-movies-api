@@ -75,35 +75,20 @@ def movie_search(request):
     min_rating = request.GET.get("min_rating")
 
     movies = Movie.objects.all().annotate(avg_rating=Avg("reviews__rating"))
-    movies = list(movies)
 
     if query:
-        movies = [
-            movie for movie in movies
-            if query.lower() in movie.title.lower()
-            or query.lower() in movie.director.lower()
-            or query.lower() in movie.overview.lower()
-        ]
+        movies = movies.filter(Q(title__icontains=query) | Q(director__icontains=query) | Q(overview__icontains=query))
 
     if genre:
-        movies = [
-            movie for movie in movies
-            if genre.lower() in movie.genre.lower()
-        ]
+        movies = movies.filter(genre__icontains=genre)
 
     if year:
-        movies = [
-            movie for movie in movies
-            if str(movie.release_year) == year
-        ]
+        movies = movies.filter(release_year=year)
 
     if min_rating:
         try:
             min_rating = float(min_rating)
-            movies = [
-                movie for movie in movies
-                if movie.avg_rating is not None and movie.avg_rating >= min_rating
-            ]
+            movies = movies.filter(avg_rating__gte=min_rating)
         except ValueError:
             return Response({"error": "min_rating must be a number"}, status=status.HTTP_400_BAD_REQUEST)
         
