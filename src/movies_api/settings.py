@@ -37,7 +37,9 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    "rest_framework",
+    'rest_framework',
+    'rest_framework.authtoken',
+    'drf_spectacular',
     'movies',
 ]
 
@@ -117,3 +119,27 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/6.0/howto/static-files/
 
 STATIC_URL = 'static/'
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.TokenAuthentication',
+        'rest_framework.authentication.SessionAuthentication',
+    ],
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.IsAuthenticatedOrReadOnly',
+    ],
+    'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
+}
+
+SPECTACULAR_SETTINGS = {
+    'TITLE': 'Movies API',
+    'DESCRIPTION': (
+        'A RESTful API for managing a movie catalogue with reviews and analytics. '
+        'Supports full CRUD for movies and reviews, token-based authentication, '
+        'and analytical endpoints for ratings, genres, and decade trends.'
+    ),
+    'VERSION': '1.0.0',
+    'SERVE_INCLUDE_SCHEMA': False,
+    'CONTACT': {'name': 'Devansh', 'email': ''},
+    'LICENSE': {'name': 'MIT'},
+}
