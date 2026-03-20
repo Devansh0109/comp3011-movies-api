@@ -5,7 +5,8 @@ from rest_framework.authtoken.models import Token
 from rest_framework import status
 from rest_framework import serializers as rf_serializers
 
-from drf_spectacular.utils import extend_schema, inline_serializer
+from drf_spectacular.utils import extend_schema, inline_serializer, OpenApiParameter
+from drf_spectacular.types import OpenApiTypes
 from django.contrib.auth import authenticate
 from django.contrib.auth.models import User
 from django.db.models import Avg, Q, Count
@@ -163,7 +164,20 @@ def review_detail(request, pk, review_pk):
         movie.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
         
-@extend_schema(responses=MovieSerializer(many=True), tags=["analytics"])
+@extend_schema(
+    parameters=[
+        OpenApiParameter(name="q", type=OpenApiTypes.STR, location=OpenApiParameter.QUERY,
+            description="Search by title, director, or overview", required=False),
+        OpenApiParameter(name="genre", type=OpenApiTypes.STR, location=OpenApiParameter.QUERY,
+            description="Filter by genre (partial match)", required=False),
+        OpenApiParameter(name="year", type=OpenApiTypes.INT, location=OpenApiParameter.QUERY,
+            description="Filter by exact release year", required=False),
+        OpenApiParameter(name="min_rating", type=OpenApiTypes.FLOAT, location=OpenApiParameter.QUERY,
+            description="Minimum average rating (1.0 - 5.0)", required=False),
+    ],
+    responses=MovieSerializer(many=True),
+    tags=["analytics"]
+)
 @api_view(["GET"])
 def movie_search(request):
     query = request.GET.get("q")
@@ -194,7 +208,14 @@ def movie_search(request):
     serializer = MovieSerializer(movies, many=True)
     return Response(serializer.data)
 
-@extend_schema(responses=MovieSerializer(many=True), tags=["analytics"])
+@extend_schema(
+    parameters=[
+        OpenApiParameter(name="limit", type=OpenApiTypes.INT, location=OpenApiParameter.QUERY,
+            description="Number of results to return (default: 10)", required=False),
+    ],
+    responses=MovieSerializer(many=True),
+    tags=["analytics"]
+)
 @api_view(["GET"])
 def top_rated_movies(request):
     try:
@@ -208,7 +229,14 @@ def top_rated_movies(request):
     serializer = MovieSerializer(movies, many=True)
     return Response(serializer.data)
 
-@extend_schema(responses=MovieSerializer(many=True),tags=["analytics"])
+@extend_schema(
+    parameters=[
+        OpenApiParameter(name="limit", type=OpenApiTypes.INT, location=OpenApiParameter.QUERY,
+            description="Number of results to return (default: 10)", required=False),
+    ],
+    responses=MovieSerializer(many=True),
+    tags=["analytics"]
+)
 @api_view(["GET"])
 def most_reviewed_movies(request):
     try:
