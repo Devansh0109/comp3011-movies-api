@@ -187,7 +187,6 @@ OK
 | GET | `/api/movies/top-rated/` | Ranked by average rating (`?limit=N`) | No |
 | GET | `/api/movies/most-reviewed/` | Ranked by review count (`?limit=N`) | No |
 | GET | `/api/movies/genre-summary/` | Per-genre movie count and average rating | No |
-| GET | `/api/movies/decade-summary/` | Per-decade movie count and average rating | No |
 
 ### AI-Powered
 
