@@ -236,3 +236,22 @@ def genre_summary(request):
     summary = summary.order_by("genre")
 
     return Response(list(summary))
+
+@extend_schema(exclude=True)
+@api_view(["GET"])
+@permission_classes([AllowAny])
+def api_root(request):
+    """API root — lists all available endpoint groups."""
+    return Response({
+        "movies": request.build_absolute_uri("/api/movies/"),
+        "search": request.build_absolute_uri("/api/movies/search/"),
+        "top_rated": request.build_absolute_uri("/api/movies/top-rated/"),
+        "most_reviewed": request.build_absolute_uri("/api/movies/most-reviewed/"),
+        "genre_summary": request.build_absolute_uri("/api/movies/genre-summary/"),
+        "decade_summary": request.build_absolute_uri("/api/movies/decade-summary/"),
+        "documentation": request.build_absolute_uri("/api/docs/"),
+        "auth": {
+            "register": request.build_absolute_uri("/api/auth/register/"),
+            "login": request.build_absolute_uri("/api/auth/login/"),
+        }
+    })

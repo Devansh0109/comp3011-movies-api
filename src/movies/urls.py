@@ -10,10 +10,12 @@ from .views import (
     top_rated_movies,
     most_reviewed_movies,
     genre_summary,
+    api_root,
     )
 from .recommendation_views import movie_recommendations
 
 urlpatterns = [
+    path("", api_root, name="api-root"),
     path("auth/register/", register, name="register"),
     path("auth/login/", login_view, name="login"),    
     path("movies/", movie_list, name="movie-list"),
