@@ -248,7 +248,6 @@ def api_root(request):
         "top_rated": request.build_absolute_uri("/api/movies/top-rated/"),
         "most_reviewed": request.build_absolute_uri("/api/movies/most-reviewed/"),
         "genre_summary": request.build_absolute_uri("/api/movies/genre-summary/"),
-        "decade_summary": request.build_absolute_uri("/api/movies/decade-summary/"),
         "documentation": request.build_absolute_uri("/api/docs/"),
         "auth": {
             "register": request.build_absolute_uri("/api/auth/register/"),
