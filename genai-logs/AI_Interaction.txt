@@ -1,0 +1,55 @@
+Log 1 — Search Optimisation
+
+Prompt:
+“I implemented search using manual filtering. Is there a better way?”
+
+AI Summary:
+Suggested replacing Python list filtering with Django ORM queries using .filter() and Q objects for better performance.
+
+Reflection:
+This helped me understand the importance of database-level filtering. I refactored my implementation to improve efficiency and scalability.
+
+Log 2 — Dataset Selection
+
+Prompt:
+“Should I use MovieLens or another dataset?”
+
+AI Summary:
+Compared MovieLens, TMDB, and IMDb datasets and recommended TMDB due to richer metadata.
+
+Reflection:
+This decision improved the realism of my API and allowed better analytics and recommendations.
+
+Log 3 — Model Design
+
+Prompt:
+“Should I change my model to fit the dataset?”
+
+AI Summary:
+Suggested extending the model instead of removing fields.
+
+Reflection:
+I retained my original design while improving compatibility with real-world data, which strengthened the overall architecture.
+
+Log 4 — ORM Aggregation
+
+Prompt:
+“Why use annotate() when average rating is already calculated?”
+
+AI Summary:
+Explained difference between query-time and serializer-time computation.
+
+Reflection:
+This improved my understanding of Django ORM and allowed me to implement filtering correctly.
+
+Log 5 — Code Refactoring
+
+Prompt:
+“Can we simplify repeated .lower() usage?”
+
+AI Summary:
+Suggested normalising input values once to improve readability.
+
+Reflection:
+This led to cleaner, more maintainable code and reinforced good coding practices.
+
