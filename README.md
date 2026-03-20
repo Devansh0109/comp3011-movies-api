@@ -1,4 +1,4 @@
-# 🎬 Movies API
+# CineMatch API
 
 A production-ready RESTful Web API for managing a curated movie catalogue, built with **Django REST Framework**. Integrates ~4,800 real films from the TMDB dataset, exposes analytical endpoints for genre and decade trends, implements a content-based recommendation engine, and ships an MCP server for natural language querying via Claude Desktop.
 

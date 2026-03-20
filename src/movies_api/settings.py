@@ -136,14 +136,12 @@ REST_FRAMEWORK = {
 }
 
 SPECTACULAR_SETTINGS = {
-    'TITLE': 'Movies API',
+    'TITLE': 'CineMatch API',
     'DESCRIPTION': (
-        'A RESTful API for managing a movie catalogue with reviews and analytics. '
-        'Supports full CRUD for movies and reviews, token-based authentication, '
-        'and analytical endpoints for ratings, genres, and decade trends.'
+        'An intelligent movie discovery engine featuring a custom-weighted '
+        'recommendation algorithm, deep data analytics, and secure token authentication.'
     ),
     'VERSION': '1.0.0',
     'SERVE_INCLUDE_SCHEMA': False,
-    'CONTACT': {'name': 'Devansh', 'email': ''},
-    'LICENSE': {'name': 'MIT'},
+    'CONTACT': {'name': 'Devansh Singhal', 'email': 'devansh0109@gmail.com'},
 }
