@@ -11,6 +11,7 @@ from .views import (
     most_reviewed_movies,
     genre_summary,
     )
+from .recommendation_views import movie_recommendations
 
 urlpatterns = [
     path("auth/register/", register, name="register"),
@@ -23,4 +24,5 @@ urlpatterns = [
     path("movies/top-rated/", top_rated_movies, name="top-rated-movies"),
     path("movies/most-reviewed/", most_reviewed_movies, name="most-reviewed-movies"),
     path("movies/genre-summary/", genre_summary, name="genre-summary"),
+    path("movies/<int:pk>/recommendations/", movie_recommendations, name="movie-recommendations"),
 ]
